@@ -2,18 +2,20 @@ lockfileVersion: 5.3
 
 specifiers:
   '@swc/core': ^1.2.173
+  '@types/estree': ^0.0.51
   '@types/node': ^17.0.30
   rollup: ^2.70.2
   rollup-plugin-hermes: ^0.11.1
-  rollup-plugin-swc: ^0.2.1
+  rollup-plugin-swc: github:js6pak/rollup-plugin-swc
   typescript: ^4.6.4
 
 dependencies:
   '@swc/core': 1.2.173
   rollup-plugin-hermes: 0.11.1
-  rollup-plugin-swc: 0.2.1_@swc+core@1.2.173+rollup@2.70.2
+  rollup-plugin-swc: github.com/js6pak/rollup-plugin-swc/5c561dee9ee549d6dc6413d7ebab7b410cb774ed_@swc+core@1.2.173+rollup@2.70.2
 
 devDependencies:
+  '@types/estree': 0.0.51
   '@types/node': 17.0.30
   rollup: 2.70.2
   typescript: 4.6.4
@@ -106,6 +108,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@swc/core-linux-x64-musl/1.2.173:
@@ -114,6 +117,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@swc/core-win32-arm64-msvc/1.2.173:
@@ -163,6 +167,10 @@ packages:
       '@swc/core-win32-x64-msvc': 1.2.173
     dev: false
 
+  /@types/estree/0.0.51:
+    resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
+    dev: true
+
   /@types/node/17.0.30:
     resolution: {integrity: sha512-oNBIZjIqyHYP8VCNAV9uEytXVeXG2oR0w9lgAXro20eugRQfY002qr3CUl6BAe+Yf/z3CRjPdz27Pu6WWtuSRw==}
     dev: true
@@ -193,17 +201,6 @@ packages:
       hermes-engine: 0.11.0
     dev: false
 
-  /rollup-plugin-swc/0.2.1_@swc+core@1.2.173+rollup@2.70.2:
-    resolution: {integrity: sha512-wWRYt9tC0aIBvRQHNnVtwJ6DRPDj9XYpOAcOyFB11sKSkR/R+NAmbrjBACCPNVmZcxg6joV29wXgb5mU1DI7eA==}
-    peerDependencies:
-      '@swc/core': '>=1.0'
-      rollup: '>=1.5.0'
-    dependencies:
-      '@rollup/pluginutils': 4.2.1
-      '@swc/core': 1.2.173
-      rollup: 2.70.2
-    dev: false
-
   /rollup/2.70.2:
     resolution: {integrity: sha512-EitogNZnfku65I1DD5Mxe8JYRUCy0hkK5X84IlDtUs+O6JRMpRciXTzyCUuX11b5L5pvjH+OmFXiQ3XjabcXgg==}
     engines: {node: '>=10.0.0'}
@@ -217,3 +214,18 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
+
+  github.com/js6pak/rollup-plugin-swc/5c561dee9ee549d6dc6413d7ebab7b410cb774ed_@swc+core@1.2.173+rollup@2.70.2:
+    resolution: {tarball: https://codeload.github.com/js6pak/rollup-plugin-swc/tar.gz/5c561dee9ee549d6dc6413d7ebab7b410cb774ed}
+    id: github.com/js6pak/rollup-plugin-swc/5c561dee9ee549d6dc6413d7ebab7b410cb774ed
+    name: rollup-plugin-swc
+    version: 0.2.1
+    requiresBuild: true
+    peerDependencies:
+      '@swc/core': '>=1.0'
+      rollup: '>=1.5.0'
+    dependencies:
+      '@rollup/pluginutils': 4.2.1
+      '@swc/core': 1.2.173
+      rollup: 2.70.2
+    dev: false

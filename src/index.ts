@@ -127,3 +127,5 @@ export function aliucordPlugin(pluginOptions?: CommonOptions): Plugin {
         }
     };
 }
+
+export * from "./manifestGen";

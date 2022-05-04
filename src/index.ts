@@ -1,6 +1,6 @@
 import { spawn, execSync, SpawnOptionsWithoutStdio } from "child_process";
 import { InputOptions, OutputOptions, Plugin } from "rollup";
-import swc from "rollup-plugin-swc";
+import swc from "@aliucord/rollup-plugin-swc";
 import { hermes } from "rollup-plugin-hermes";
 import { cwd } from "process";
 
@@ -26,7 +26,7 @@ function autoDeploy(pushOnly: boolean, isPlugin: boolean): Plugin {
             }
 
             if (!pushOnly) {
-                if (await spawnAsync("adb", ["shell", "am", "start", "-S", "-n", "com.discordrn/.MainActivity"]) != 0) {
+                if (await spawnAsync("adb", ["shell", "am", "start", "-S", "-n", "com.discord/.MainActivity"]) != 0) {
                     console.error("Failed to start");
                     return;
                 }
@@ -40,6 +40,8 @@ function autoDeploy(pushOnly: boolean, isPlugin: boolean): Plugin {
 interface CommonOptions {
     hermesPath?: string;
     autoDeploy?: boolean | "push-only";
+    internalHelpers?: boolean;
+    minify?: boolean;
 }
 
 function commonOptions(options: InputOptions, pluginOptions: CommonOptions | undefined, isPlugin: boolean) {
@@ -68,7 +70,8 @@ function commonOptions(options: InputOptions, pluginOptions: CommonOptions | und
                             },
                         }
                     }
-                }
+                },
+                externalHelpers: pluginOptions?.internalHelpers ? false : true
             },
             env: {
                 // Adapted from https://github.com/facebook/metro/blob/main/packages/metro-react-native-babel-preset/src/configs/main.js
@@ -76,7 +79,8 @@ function commonOptions(options: InputOptions, pluginOptions: CommonOptions | und
                 // Workaround swc setting defaults from browserlist
                 exclude: ["bugfix/transform-edge-default-parameters", "bugfix/transform-async-arrows-in-class", "bugfix/transform-tagged-template-caching", "bugfix/transform-safari-id-destructuring-collision-in-function-expression", "proposal-class-static-block", "proposal-private-property-in-object", "proposal-logical-assignment-operators", "proposal-export-namespace-from", "proposal-nullish-coalescing-operator", "proposal-optional-chaining", "proposal-optional-catch-binding", "proposal-object-rest-spread", "transform-exponentiation-operator", "transform-block-scoped-functions", "transform-template-literals", "transform-spread", "transform-function-name", "transform-arrow-functions", "transform-duplicate-keys", "transform-sticky-regex", "transform-typeof-symbol", "transform-shorthand-properties", "transform-parameters", "transform-for-of", "transform-computed-properties", "transform-regenerator", "transform-new-target", "transform-property-literals", "transform-member-expression-literals", "transform-reserved-words"]
             },
-            sourceMaps: true
+            sourceMaps: true,
+            minify: pluginOptions?.minify ?? true
         })
     );
     options.plugins.push(hermes(pluginOptions?.hermesPath !== undefined ? { hermesPath: pluginOptions.hermesPath } : undefined));
@@ -92,6 +96,12 @@ export function aliucord(pluginOptions?: CommonOptions): Plugin {
         options(options: InputOptions) {
             return commonOptions(options, pluginOptions, false);
         },
+
+        outputOptions(options: OutputOptions) {
+            options.compact = pluginOptions?.minify ?? true;
+
+            return options;
+        }
     };
 }
 
@@ -106,6 +116,7 @@ export function aliucordPlugin(pluginOptions?: CommonOptions): Plugin {
         },
 
         outputOptions(options: OutputOptions) {
+            options.compact = pluginOptions?.minify ?? true;
             options.name = "__ACP";
             options.format = "iife";
             options.globals = (name: string) => {

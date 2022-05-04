@@ -1,7 +1,7 @@
 {
-  "name": "rollup-plugin-aliucord",
+  "name": "@aliucord/rollup-plugin",
   "version": "0.1.0",
-  "description": "Rollup plugin to compile Aliucord plugins",
+  "description": "Rollup plugin to compile Aliucord and its plugins",
   "keywords": [],
   "homepage": "https://github.com/Aliucord/rollup-plugin-aliucord#readme",
   "bugs": {
@@ -25,9 +25,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@aliucord/rollup-plugin-swc": "^0.2.2",
     "@swc/core": "^1.2.173",
-    "rollup-plugin-hermes": "^0.11.1",
-    "rollup-plugin-swc": "github:js6pak/rollup-plugin-swc"
+    "rollup-plugin-hermes": "^1.0.0"
   },
   "devDependencies": {
     "@types/estree": "^0.0.51",

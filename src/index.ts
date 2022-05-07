@@ -108,28 +108,30 @@ export function aliucord(pluginOptions?: CommonOptions): Plugin {
 export function aliucordPlugin(pluginOptions?: CommonOptions): Plugin {
     return {
         name: "AliucordPlugin",
-        footer: "window.aliu.api.PluginManager._register(__ACP);delete window.__ACP",
 
         options(options: InputOptions) {
-            options.external = /^(aliucord(\/.+)?|react(-native)?)$/;
+            options.external = ["aliucord", "react", "react-native", "@swc/helpers"];
             return commonOptions(options, pluginOptions, true);
         },
 
         outputOptions(options: OutputOptions) {
             options.compact = pluginOptions?.minify ?? true;
-            options.name = "__ACP";
             options.format = "iife";
             options.globals = (name: string) => {
+                const prefix = "globalThis._globals.aliucord"
+
                 switch (name) {
                     case "aliucord":
-                        return "window.aliu";
+                        return prefix;
                     case "react":
-                        return "window.aliu.metro.React";
+                        return prefix + ".metro.React";
                     case "react-native":
-                        return "window.aliu.metro.ReactNative";
+                        return prefix + ".metro.ReactNative";
+                    case "@swc/helpers":
+                        return "swcHelpers";
                 }
 
-                if (name.startsWith("aliucord")) return `window.aliu.${name.slice(9).replace("/", ".")}`;
+                if (name.startsWith("aliucord/")) return prefix + `.${name.slice(9).replace("/", ".")}`;
 
                 return name;
             };

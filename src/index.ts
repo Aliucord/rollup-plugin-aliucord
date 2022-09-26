@@ -3,6 +3,7 @@ import { InputOptions, OutputOptions, Plugin } from "rollup";
 import swc from "@aliucord/rollup-plugin-swc";
 import { hermes } from "rollup-plugin-hermes";
 import { cwd } from "process";
+import { makePluginZip } from "./makePluginZip";
 
 function spawnAsync(command: string, args?: ReadonlyArray<string>, options?: SpawnOptionsWithoutStdio): Promise<number | null> {
     return new Promise<number | null>((resolve, reject) => {
@@ -111,14 +112,14 @@ export function aliucordPlugin(pluginOptions?: CommonOptions): Plugin {
 
         options(options: InputOptions) {
             options.external = ["aliucord", "react", "react-native", "@swc/helpers"];
-            return commonOptions(options, pluginOptions, true);
+            commonOptions(options, pluginOptions, true);
         },
 
         outputOptions(options: OutputOptions) {
             options.compact = pluginOptions?.minify ?? true;
             options.format = "iife";
             options.globals = (name: string) => {
-                const prefix = "globalThis.aliucord"
+                const prefix = "globalThis.aliucord";
 
                 switch (name) {
                     case "aliucord":
@@ -142,3 +143,4 @@ export function aliucordPlugin(pluginOptions?: CommonOptions): Plugin {
 }
 
 export * from "./manifestGen";
+export * from "./makePluginZip";

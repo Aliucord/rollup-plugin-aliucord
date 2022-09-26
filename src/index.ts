@@ -3,7 +3,6 @@ import { InputOptions, OutputOptions, Plugin } from "rollup";
 import swc from "@aliucord/rollup-plugin-swc";
 import { hermes } from "rollup-plugin-hermes";
 import { cwd } from "process";
-import { makePluginZip } from "./makePluginZip";
 
 function spawnAsync(command: string, args?: ReadonlyArray<string>, options?: SpawnOptionsWithoutStdio): Promise<number | null> {
     return new Promise<number | null>((resolve, reject) => {

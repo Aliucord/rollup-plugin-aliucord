@@ -118,7 +118,7 @@ export function aliucordPlugin(pluginOptions?: CommonOptions): Plugin {
             options.compact = pluginOptions?.minify ?? true;
             options.format = "iife";
             options.globals = (name: string) => {
-                const prefix = "globalThis._globals.aliucord"
+                const prefix = "globalThis.aliucord"
 
                 switch (name) {
                     case "aliucord":

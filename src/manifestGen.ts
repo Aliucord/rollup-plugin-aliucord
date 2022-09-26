@@ -14,7 +14,7 @@ async function makePluginManifest(manifestPath: string, baseManifestPath: string
 
     const manifest = Object.assign({}, baseManifest, pluginManifest);
     manifest.name ||= process.env.plugin;
-    manifest.description ||= "No description provided."
+    manifest.description ||= "No description provided.";
 
     if (!manifest.license) {
         throw new Error("No license specified. Please specify one in the base or plugin manifest and try again.");
@@ -42,12 +42,14 @@ async function makePluginManifest(manifestPath: string, baseManifestPath: string
     return manifest;
 }
 
-export function makeManifest(options: { baseManifest: string, manifest: string, outputFile: string }): Plugin {
+export function makeManifest(options: { baseManifest: string, manifest: string, outputFile: string; }): Plugin {
     return {
         name: "ManifestGenerator",
         async generateBundle() {
+            process.env.manifestPath = options.outputFile;
+
             const manifest = await makePluginManifest(options.manifest, options.baseManifest);
             await writeFile(options.outputFile, JSON.stringify(manifest));
         }
-    }
+    };
 }

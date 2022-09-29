@@ -1,6 +1,6 @@
 {
   "name": "@aliucord/rollup-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rollup plugin to compile Aliucord and its plugins",
   "keywords": [],
   "homepage": "https://github.com/Aliucord/rollup-plugin-aliucord#readme",

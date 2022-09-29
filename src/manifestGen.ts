@@ -42,14 +42,16 @@ async function makePluginManifest(manifestPath: string, baseManifestPath: string
     return manifest;
 }
 
-export function makeManifest(options: { baseManifest: string, manifest: string, outputFile: string; }): Plugin {
+export function makeManifest(options: { baseManifest: string, manifest: string }): Plugin {
     return {
         name: "ManifestGenerator",
         async generateBundle() {
-            process.env.manifestPath = options.outputFile;
-
             const manifest = await makePluginManifest(options.manifest, options.baseManifest);
-            await writeFile(options.outputFile, JSON.stringify(manifest));
+            this.emitFile({
+                type: "asset",
+                fileName: `${process.env.plugin}-manifest.json`,
+                source: JSON.stringify(manifest)
+            })
         }
     };
 }

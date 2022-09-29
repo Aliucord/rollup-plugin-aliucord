@@ -1,15 +1,6 @@
 import { OutputBundle, OutputOptions, Plugin } from "rollup";
 import { ZipFile } from "yazl";
 
-function readStream(stream: NodeJS.ReadableStream) {
-    const chunks: Buffer[] = [];
-    return new Promise<Buffer>((resolve, reject) => {
-        stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
-        stream.on('error', (err) => reject(err));
-        stream.on('end', () => resolve(Buffer.concat(chunks)));
-    })
-}
-
 export function makePluginZip(): Plugin {
     return {
         name: "MakePluginZip",
@@ -29,17 +20,33 @@ export function makePluginZip(): Plugin {
             if (bundleFile.type !== "asset") throw new Error("Bundle file type was not asset");
 
             const zip = new ZipFile();
-            const zipData = readStream(zip.outputStream);
 
-            zip.addBuffer(Buffer.from(bundleFile.source), "index.js.bundle")
-            zip.addBuffer(Buffer.from(manifestFile.source), "manifest.json")
+            zip.addBuffer(Buffer.from(bundleFile.source), "index.js.bundle", {
+                mtime: new Date(0),
+                compress: false
+            })
+            zip.addBuffer(Buffer.from(manifestFile.source), "manifest.json", {
+                mtime: new Date(0),
+                compress: false
+            })
 
             zip.end();
+
+            // Read outputStream into a buffer
+            const chunks: Buffer[] = [];
+            for await (const chunk of zip.outputStream) {
+                chunks.push(
+                    typeof chunk === "string"
+                        ? Buffer.from(chunk)
+                        : chunk
+                );
+            }
+            const zipBuffer = Buffer.concat(chunks)
 
             this.emitFile({
                 type: "asset",
                 fileName: `${process.env.plugin}.zip`,
-                source: await zipData // By this point the promise will be done, so just await it
+                source: zipBuffer
             })
         }
     };

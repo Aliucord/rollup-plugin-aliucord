@@ -52,8 +52,8 @@ function commonOptions(options: InputOptions, pluginOptions: CommonOptions | und
         hash = "unknown";
     }
 
-    options.plugins ??= [];
-    options.plugins.push(
+    const addedPlugins: Plugin[] = [];
+    addedPlugins.push(
         swc({
             jsc: {
                 parser: {
@@ -83,8 +83,12 @@ function commonOptions(options: InputOptions, pluginOptions: CommonOptions | und
             minify: pluginOptions?.minify ?? true
         })
     );
-    options.plugins.push(hermes(pluginOptions?.hermesPath !== undefined ? { hermesPath: pluginOptions.hermesPath } : undefined));
-    if (pluginOptions?.autoDeploy) options.plugins.push(autoDeploy(pluginOptions.autoDeploy === "push-only", isPlugin));
+    addedPlugins.push(hermes(pluginOptions?.hermesPath !== undefined ? { hermesPath: pluginOptions.hermesPath } : undefined));
+    if (pluginOptions?.autoDeploy) addedPlugins.push(autoDeploy(pluginOptions.autoDeploy === "push-only", isPlugin));
+
+    const sliced = options.plugins!.slice(1);
+
+    options.plugins = [options.plugins![0], ...addedPlugins, ...sliced]
 
     return options;
 }

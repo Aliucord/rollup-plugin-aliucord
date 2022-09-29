@@ -25,7 +25,6 @@ export function makePluginZip(): Plugin {
 
             // Load hermes output
             const bundleFile = bundle[`${file}.bundle`]
-            console.log(Object.keys(bundle))
             if (!bundleFile) throw new Error("Hermes bundle output unable to be found");
             if (bundleFile.type !== "asset") throw new Error("Bundle file type was not asset");
 
@@ -42,10 +41,6 @@ export function makePluginZip(): Plugin {
                 fileName: `${process.env.plugin}.zip`,
                 source: await zipData // By this point the promise will be done, so just await it
             })
-        },
-
-        options(options) {
-            console.log(options.plugins)
         }
     };
 };

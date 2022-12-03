@@ -18,7 +18,7 @@ function autoDeploy(pushOnly: boolean, isPlugin: boolean): Plugin {
     return {
         name: "AutoDeploy",
         async writeBundle(options, bundle) {
-            if (await spawnAsync("adb", ["push", options.file!! + ".bundle", "/sdcard/AliucordRN/" + (isPlugin ? "plugins/" : "")], {
+            if (await spawnAsync("adb", ["push", options.file!!.replace(".js", ".zip"), "/sdcard/AliucordRN/" + (isPlugin ? "plugins/" : "")], {
                 cwd: cwd()
             }) != 0) {
                 console.error("Failed to push");
@@ -26,7 +26,7 @@ function autoDeploy(pushOnly: boolean, isPlugin: boolean): Plugin {
             }
 
             if (!pushOnly) {
-                if (await spawnAsync("adb", ["shell", "am", "start", "-S", "-n", "com.discord/.MainActivity"]) != 0) {
+                if (await spawnAsync("adb", ["shell", "am", "start", "-S", "-n", "com.discord/com.discord.main.MainActivity"]) != 0) {
                     console.error("Failed to start");
                     return;
                 }

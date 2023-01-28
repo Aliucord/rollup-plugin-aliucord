@@ -14,7 +14,7 @@ function spawnAsync(command: string, args?: ReadonlyArray<string>, options?: Spa
     });
 }
 
-function autoDeploy(pushOnly: boolean, isPlugin: boolean): Plugin {
+function autoDeploy(pushOnly: boolean, isPlugin: boolean, packageName: string | undefined): Plugin {
     return {
         name: "AutoDeploy",
         async writeBundle(options, bundle) {
@@ -26,7 +26,7 @@ function autoDeploy(pushOnly: boolean, isPlugin: boolean): Plugin {
             }
 
             if (!pushOnly) {
-                if (await spawnAsync("adb", ["shell", "am", "start", "-S", "-n", "com.discord/com.discord.main.MainActivity"]) != 0) {
+                if (await spawnAsync("adb", ["shell", "am", "start", "-S", "-n", `${packageName ?? 'com.aliucordrn'}/com.discord.main.MainActivity`]) != 0) {
                     console.error("Failed to start");
                     return;
                 }
@@ -42,6 +42,7 @@ interface CommonOptions {
     autoDeploy?: boolean | "push-only";
     internalHelpers?: boolean;
     minify?: boolean;
+    packageName?: string;
 }
 
 function commonOptions(options: InputOptions, pluginOptions: CommonOptions | undefined, isPlugin: boolean) {
@@ -84,7 +85,7 @@ function commonOptions(options: InputOptions, pluginOptions: CommonOptions | und
         })
     );
     addedPlugins.push(hermes(pluginOptions?.hermesPath !== undefined ? { hermesPath: pluginOptions.hermesPath } : undefined));
-    if (pluginOptions?.autoDeploy) addedPlugins.push(autoDeploy(pluginOptions.autoDeploy === "push-only", isPlugin));
+    if (pluginOptions?.autoDeploy) addedPlugins.push(autoDeploy(pluginOptions.autoDeploy === "push-only", isPlugin, pluginOptions.packageName));
 
     if (!Array.isArray(options.plugins)) options.plugins = [ options.plugins ]
     const sliced = options.plugins!.slice(1);

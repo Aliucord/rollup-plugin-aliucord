@@ -86,6 +86,7 @@ function commonOptions(options: InputOptions, pluginOptions: CommonOptions | und
     addedPlugins.push(hermes(pluginOptions?.hermesPath !== undefined ? { hermesPath: pluginOptions.hermesPath } : undefined));
     if (pluginOptions?.autoDeploy) addedPlugins.push(autoDeploy(pluginOptions.autoDeploy === "push-only", isPlugin));
 
+    if (!Array.isArray(options.plugins)) options.plugins = [ options.plugins ]
     const sliced = options.plugins!.slice(1);
 
     options.plugins = [options.plugins![0], ...addedPlugins, ...sliced]

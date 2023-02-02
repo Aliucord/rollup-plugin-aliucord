@@ -1,21 +1,21 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@aliucord/hermesc': ^0.70.6-aliucord-1
+  '@aliucord/hermesc': latest
   '@aliucord/rollup-plugin-swc': ^0.2.2
   '@swc/core': 1.2.189
   '@types/estree': ^1.0.0
   '@types/node': ^18.11.18
   '@types/yazl': ^2.4.2
   rollup: ^3.12.0
-  rollup-plugin-hermes: ^1.0.1
+  rollup-plugin-hermes: ^1.0.3
   typescript: ^4.9.4
   yazl: ^2.5.1
 
 dependencies:
   '@aliucord/rollup-plugin-swc': 0.2.2_t5rjuyxggfjxsu4fmm5kybbqam
   '@swc/core': 1.2.189
-  rollup-plugin-hermes: 1.0.1
+  rollup-plugin-hermes: 1.0.3_tt3epa2p4nt3aarqsmpfpneyja
   yazl: 2.5.1
 
 devDependencies:
@@ -30,7 +30,6 @@ packages:
 
   /@aliucord/hermesc/0.70.6-aliucord-1:
     resolution: {integrity: sha512-cYNxjEq87mlX5jNZobejwPzSX3J0ySOwc4moQHW+1vDO8X4ZIF31cZLSqRb4hfX47JE8P74Ckjj3kQV2dPlSVQ==}
-    dev: true
 
   /@aliucord/rollup-plugin-swc/0.2.2_t5rjuyxggfjxsu4fmm5kybbqam:
     resolution: {integrity: sha512-P1QuH3XwjYxj4lOpDbCHSPHETF9qi0XRBAkuI1tdqW/shf9Q+gOzi7QtbK4dNoaklH4d9chQCJMqcMya80eeDg==}
@@ -222,10 +221,12 @@ packages:
     engines: {node: '>=8.6'}
     dev: false
 
-  /rollup-plugin-hermes/1.0.1:
-    resolution: {integrity: sha512-JV+steSAPzx/aQ9cn1O9RFcxZjujWiClVuDboUlAmDaNAojM4w/RUuRG/rgVyLSEfknZcJHTyCmwvj/+mWBlIQ==}
+  /rollup-plugin-hermes/1.0.3_tt3epa2p4nt3aarqsmpfpneyja:
+    resolution: {integrity: sha512-cSkKFMWDT+Ot1SsUdukr69DkhJZz9UCBnN+ktOrZHURYuP/vzN9nF6IEDp1O/DuCAgw3bs5TUfovnH9LDCrnEg==}
     peerDependencies:
-      hermes-engine: 0.x
+      '@aliucord/hermesc': '*'
+    dependencies:
+      '@aliucord/hermesc': 0.70.6-aliucord-1
     dev: false
 
   /rollup/3.12.0:

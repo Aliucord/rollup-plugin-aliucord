@@ -18,7 +18,7 @@ function autoDeploy(pushOnly: boolean, isPlugin: boolean, packageName: string | 
     return {
         name: "AutoDeploy",
         async writeBundle(options, bundle) {
-            if (await spawnAsync("adb", ["push", options.file!!.replace(".js", ".zip"), "/sdcard/AliucordRN/" + (isPlugin ? "plugins/" : "")], {
+            if (await spawnAsync("adb", ["push", isPlugin ? options.file!!.replace(".js", ".zip") : options.file!! + ".bundle", "/sdcard/AliucordRN/" + (isPlugin ? "plugins/" : "")], {
                 cwd: cwd()
             }) != 0) {
                 console.error("Failed to push");
